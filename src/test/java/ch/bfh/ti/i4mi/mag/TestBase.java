@@ -1,4 +1,4 @@
-package ch.bfh.ti.i4mi.mag.ppqm;
+package ch.bfh.ti.i4mi.mag;
 
 import ch.bfh.ti.i4mi.mag.MobileAccessGateway;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import java.util.Locale;
 @Import(MobileAccessGateway.class)
 @ActiveProfiles("test")
 @Slf4j
-abstract public class PpqmTestBase {
+abstract public class TestBase {
 
     @Autowired
     protected CamelContext camelContext;

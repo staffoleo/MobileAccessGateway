@@ -2,6 +2,7 @@ package ch.bfh.ti.i4mi.mag.ppqm;
 
 import ca.uhn.fhir.rest.api.MethodOutcome;
 import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
+import ch.bfh.ti.i4mi.mag.TestBase;
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.support.DefaultExchange;
@@ -19,7 +20,7 @@ import static org.openehealth.ipf.commons.ihe.fhir.chppqm.ChPpqmConsentCreator.c
 /**
  * @author Dmytro Rud
  */
-public class Ppq3Test extends PpqmTestBase {
+public class Ppq3Test extends TestBase {
 
     private Exchange send(Object request, String httpMethod) throws Exception {
         Exchange exchange = new DefaultExchange(camelContext, ExchangePattern.InOut);

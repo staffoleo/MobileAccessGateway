@@ -28,6 +28,7 @@ import org.openehealth.ipf.commons.ihe.xds.core.metadata.Code;
 import org.openehealth.ipf.commons.ihe.xds.core.metadata.Identifiable;
 import org.openehealth.ipf.commons.ihe.xds.core.metadata.Timestamp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -42,6 +43,7 @@ import net.ihe.gazelle.hl7v3.datatypes.ST;
  * Base class for request converters
  *
  */
+@Component
 public class BaseRequestConverter {
 
 	@Autowired

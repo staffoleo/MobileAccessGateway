@@ -38,12 +38,14 @@ import ca.uhn.fhir.rest.param.TokenOrListParam;
 import ca.uhn.fhir.rest.param.TokenParam;
 import ca.uhn.fhir.rest.server.exceptions.InvalidRequestException;
 import ch.bfh.ti.i4mi.mag.BaseRequestConverter;
+import org.springframework.stereotype.Component;
 
 /**
  * ITI-66 to ITI-18 request converter
  * @author alexander kreutz
  *
  */
+@Component
 public class Iti66RequestConverter extends BaseRequestConverter {
 
 	 /**
@@ -58,24 +60,13 @@ public class Iti66RequestConverter extends BaseRequestConverter {
          Query searchQuery = null;
          
          if (searchParameter.getIdentifier() != null || searchParameter.get_id() != null) {
-        	 final GetSubmissionSetAndContentsQuery query = new GetSubmissionSetAndContentsQuery();
-        	 if (searchParameter.getIdentifier() != null) {
-	        	 String val = searchParameter.getIdentifier().getValue();
-	        	 if (val.startsWith("urn:oid:")) {
-	        		 query.setUniqueId(val.substring("urn:oid:".length()));
-	        	 } else if (val.startsWith("urn:uuid:")) {
-	        		 query.setUuid(val.substring("urn:uuid:".length()));
-	        	 }
-        	 } else {
-        		 query.setUuid(searchParameter.get_id().getValue());
-        	 }
-        	 
-        	 searchQuery = query;
+
+			 final GetSubmissionSetAndContentsQuery query = getGetSubmissionSetAndContentsQuery(searchParameter);
+			 searchQuery = query;
+
          } else {
-         
-         
+
 	         final FindSubmissionSetsQuery query = new FindSubmissionSetsQuery();
-	
 	         
 	         if (searchParameter.getCode() != null && ! searchParameter.getCode().getValue().equals("submissionset")) {
 	        	 throw new InvalidRequestException("Only search for submissionsets supported.");
@@ -148,4 +139,20 @@ public class Iti66RequestConverter extends BaseRequestConverter {
          return queryRegistry;
      
  }
+
+	private static GetSubmissionSetAndContentsQuery getGetSubmissionSetAndContentsQuery(Iti66SearchParameters searchParameter) {
+
+		final GetSubmissionSetAndContentsQuery query = new GetSubmissionSetAndContentsQuery();
+		if (searchParameter.getIdentifier() != null) {
+			String val = searchParameter.getIdentifier().getValue();
+			if (val.startsWith("urn:oid:")) {
+				query.setUniqueId(val.substring("urn:oid:".length()));
+			} else if (val.startsWith("urn:uuid:")) {
+				query.setUuid(val.substring("urn:uuid:".length()));
+			}
+		} else {
+			query.setUuid(searchParameter.get_id().getValue());
+		}
+		return query;
+	}
 }

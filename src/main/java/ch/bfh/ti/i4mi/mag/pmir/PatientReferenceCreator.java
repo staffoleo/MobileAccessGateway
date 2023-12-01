@@ -16,6 +16,8 @@
 
 package ch.bfh.ti.i4mi.mag.pmir;
 
+import bsh.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.Reference;
 import org.openehealth.ipf.commons.ihe.xds.core.metadata.AssigningAuthority;
 import org.openehealth.ipf.commons.ihe.xds.core.metadata.Identifiable;
@@ -60,23 +62,21 @@ public class PatientReferenceCreator {
 	}
 	
 	public Identifiable resolvePatientReference(String reference) {
-		if (reference.indexOf("Patient/") >= 0) {
-			int start = reference.indexOf("Patient/")+"Patient/".length();
-			int end = reference.indexOf("?");
-			if (end<0) end = reference.length();
-			return resolvePatientId(reference.substring(start,end));			
-		} else if (reference.indexOf("/")<0) return resolvePatientId(reference);
-		return null;
-	}
-	
-	public Identifiable resolvePatientId(String fullId) {
-		int splitIdx = fullId.indexOf("-");
-		if (splitIdx>0) {
-		  if (fullId.substring(0,splitIdx).contains(".")) {
-		    return new Identifiable(fullId.substring(splitIdx+1), new AssigningAuthority(schemeMapper.getScheme(fullId.substring(0,splitIdx))));
-		  } else {
-		    log.error("expected oid as a system for resolving Patient in: "+fullId);
-		  }
+		if (reference.contains("?")) {
+			reference = reference.substring(reference.indexOf("?"));
+			String[] fragments = StringUtils.split(reference, '&');
+			for (String fragment : fragments) {
+				if (fragment.startsWith("identifier=")) {
+					String identifier = fragment.substring("identifier=".length());
+					String[] fragments1 = StringUtils.split(identifier, '|');
+					if (fragments1.length == 2) {
+						if (fragments1[0].startsWith("urn:oid:")) {
+							fragments1[0] = fragments1[0].substring("urn:oid:".length());
+						}
+						return new Identifiable(fragments1[1], new AssigningAuthority(fragments1[0]));
+					}
+				}
+			}
 		}
 		return null;
 	}

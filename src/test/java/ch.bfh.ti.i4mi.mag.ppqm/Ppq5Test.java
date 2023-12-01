@@ -2,6 +2,7 @@ package ch.bfh.ti.i4mi.mag.ppqm;
 
 import ca.uhn.fhir.rest.gclient.ICriterion;
 import ca.uhn.fhir.rest.gclient.TokenClientParam;
+import ch.bfh.ti.i4mi.mag.TestBase;
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.support.DefaultExchange;
@@ -17,7 +18,7 @@ import static org.openehealth.ipf.commons.ihe.fhir.chppqm.ChPpqmConsentCreator.c
 /**
  * @author Dmytro Rud
  */
-public class Ppq5Test extends PpqmTestBase {
+public class Ppq5Test extends TestBase {
 
     private Exchange send(ICriterion<?> criterion) throws Exception {
         Exchange exchange = new DefaultExchange(camelContext, ExchangePattern.InOut);

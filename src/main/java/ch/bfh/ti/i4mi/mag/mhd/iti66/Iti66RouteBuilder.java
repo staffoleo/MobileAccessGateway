@@ -60,6 +60,8 @@ class Iti66RouteBuilder extends RouteBuilder {
                 "&outInterceptors=#soapRequestLogger" + 
                 "&outFaultInterceptors=#soapRequestLogger";
 
+        //https://localhost:9091/fhir/List/c61d0179-5b2b-4c17-bb71-a8db2aa9da7a
+
         from("mhd-iti66-v401:translation?audit=true&auditContext=#myAuditContext").routeId("mdh-documentmanifest-adapter")
                 // pass back errors to the endpoint
                 .errorHandler(noErrorHandler())
